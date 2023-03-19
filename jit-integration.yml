@@ -9,7 +9,7 @@ jira:
       issue_type_id: 10001
       fields:
         customfield_10034:
-          - value: 1
+          - value: 3
 shortcut:
  eliya-shortcut:
   auth:
