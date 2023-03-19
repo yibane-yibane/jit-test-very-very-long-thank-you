@@ -10,3 +10,9 @@ jira:
       fields:
         customfield_10034:
           - value: 2
+shortcut:
+ eliya-shortcut:
+  auth:
+   api_token: "${{  secrets.shortcut-api }}"
+  preferences:
+   project_id: 3
