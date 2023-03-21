@@ -1,5 +1,5 @@
 jira:
-  shimi:
+  mashu-aher:
     auth:
       api_token: ${{ secrets.jira-api }}
       email: eliya@jit.io
