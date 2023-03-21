@@ -6,7 +6,7 @@ jira:
       domain: eliya-test-99
     preferences:
       project_id: 10001
-      issue_type_id: 10001
+      issue_type_id: 100001
       fields:
         customfield_10034:
           - value: 1
