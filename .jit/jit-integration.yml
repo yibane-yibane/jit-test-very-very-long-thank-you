@@ -8,5 +8,5 @@ jira:
       project_id: 100001
       issue_type_id: 10001
       fields:
-        customfield_100034:
+        customfield_10034:
           - value: 1
