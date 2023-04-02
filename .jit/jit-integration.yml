@@ -5,7 +5,7 @@ jira:
       email: eliya@jit.io
       domain: eliya-test-99
     preferences:
-      project_id: 100001
+      project_id: 10001
       issue_type_id: 10001
       fields:
         customfield_10034:
@@ -16,4 +16,4 @@ linear:
       api_token: ${{ secrets.linear-api }}
     preferences:
       project_id: 01503c36d-df68-49d9-b8d3-2ff40a9c9956
-      team_id: 0c9308c21-50ac-4a1e-845b-a373dea4f9fb
+      team_id: 0c9308c21-50ac-4a1e-845b-a373dea4f9f
