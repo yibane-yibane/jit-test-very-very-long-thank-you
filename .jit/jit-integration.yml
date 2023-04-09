@@ -4,4 +4,4 @@ linear:
       api_token: ${{ secrets.linear-api }}
     preferences:
       team_id: c9308c21-50ac-4a1e-845b-a373dea4f9fb
-      project_id: 1503c36d-df68-49d9-b8d3-2ff40a9c99560
+      project_id: 1503c36d-df68-49d9-b8d3-2ff40a9c9956
