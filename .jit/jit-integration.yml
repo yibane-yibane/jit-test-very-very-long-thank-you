@@ -4,7 +4,6 @@ linear:
       api_token: ${{ secrets.linear-api }}
     preferences:
       team_id: c9308c21-50ac-4a1e-845b-a373dea4f9fb
-      project_id: 8ce93bd6-3edf-4b47-9467-0b6e0b7178b2
 jira:
   mashu-aher:
     auth:
