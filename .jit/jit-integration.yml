@@ -1,5 +1,5 @@
 
-linear:
+Linear:
   shem:
     auth:
       api_token: ${{ secrets.linear-api }}
