@@ -5,10 +5,3 @@ linear:
     preferences:
       team_id: c9308c21-50ac-4a1e-845b-a373dea4f9fb0
       project_id: 43039fda-2d6c-4e98-b7ea-a725fb2d70d9
-linEar:
-  shem:
-    auth:
-      api_token: ${{ secrets.linear-api }}
-    preferences:
-      team_id: c9308c21-50ac-4a1e-845b-a373dea4f9fb0
-      project_id: 43039fda-2d6c-4e98-b7ea-a725fb2d70d9
