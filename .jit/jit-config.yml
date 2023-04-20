@@ -1,3 +1,9 @@
+applications:
+- application_name: sffd
+  authentication_mode: non-authenticated
+  exclude_paths: []
+  target_url: https://fdsfds.fdsfd
+  type: web
 github_branch_protection:
   organization:
     amount_of_required_reviews: 1
