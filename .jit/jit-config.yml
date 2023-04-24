@@ -7,4 +7,4 @@ applications:
 github_branch_protection:
   organization:
     amount_of_required_reviews: 1
-    required_status_checks: []
+    required_status_checks: []hyhy
