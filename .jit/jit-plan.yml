@@ -8,6 +8,9 @@ references:
   - https://www.jit.io
 tags: []
 items:
+  - name: Verify that Github Branch Protection is properly configured
+    uses: >-
+      jitsecurity-controls/jit-plans/items/third_party_app/item-branch-protection-scm.yml@latest
   - name: Scan your code for vulnerabilities (SAST)
     uses: >-
       jitsecurity-controls/jit-plans/items/code/item-code-vulnerability.yml@latest
@@ -21,10 +24,10 @@ items:
       jitsecurity-controls/jit-plans/items/infrastructure/item-iac-misconfiguration-detection.yml@latest
   - name: Scan code for hard-coded secrets
     uses: jitsecurity-controls/jit-plans/items/code/item-secret-detection.yml@latest
-  - name: Verify that Github Branch Protection is properly configured
-    uses: >-
-      jitsecurity-controls/jit-plans/items/third_party_app/item-branch-protection-scm.yml@latest
   - name: Scan your web application for vulnerabilities
     uses: >-
       jitsecurity-controls/jit-plans/items/runtime/item-web-app-scanner.yml@latest
+  - name: Verify that MFA for your GitHub organization is enabled
+    uses: >-
+      jitsecurity-controls/jit-plans/items/third_party_app/item-mfa-scm.yml@latest
 
