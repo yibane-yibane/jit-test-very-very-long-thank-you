@@ -1,5 +1,5 @@
 applications:
-- application_name: sffd.dsad.dsa
+- application_name: sffd.dsad
   authentication_mode: non-authenticated
   exclude_paths: []
   target_url: https://fdsfds.fdsfd
