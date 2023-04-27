@@ -1,7 +1,12 @@
-linear:
-  shem:
+jira:
+  shimi:
     auth:
-      api_token: ${{ secrets.linear-api }}
+      api_token: ${{ secrets.jira-api }}
+      email: eliya@jit.io
+      domain: https://eliya-test-99
     preferences:
-      team_id: c9308c21-50ac-4a1e-845b-a373dea4f9fb
-      project_id: 43039fda-2d6c-4e98-b7ea-a725fb2d70d9
+      project_id: 10001
+      issue_type_id: 10001
+      fields:
+        customfield_10034:
+          - value: "1"
