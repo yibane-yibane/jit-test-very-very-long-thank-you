@@ -1,10 +1,17 @@
 applications:
-- application_name: sffd
+- application_name: sffda
   authentication_mode: non-authenticated
   exclude_paths: []
-  target_url: https://fdsfds.fdsfd
+  target_url: https://public-firing-range.appspot.com
   type: web
-github_branch_protection:
-  organization:
-    amount_of_required_reviews: 1
-    required_status_checks: []
+deployment:
+  environments:
+  - staging
+plan_items:
+  item-web-app-scanner:
+    deployment:
+      configuration:
+      - sffda
+      tags:
+      - staging
+      trigger: deployment
