@@ -1,5 +1,5 @@
 applications:
-- application_name: sffdaa
+- application_name: sffda
   authentication_mode: non-authenticated
   exclude_paths: []
   target_url: https://public-firing-range.appspot.com
@@ -11,7 +11,7 @@ plan_items:
   item-web-app-scanner:
     deployment:
       configuration:
-      - sffdaa
+      - sffda
       tags:
       - staging
       trigger: deployment
