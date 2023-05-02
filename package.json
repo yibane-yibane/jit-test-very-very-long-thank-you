@@ -7,8 +7,3 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "pac-resolver": "4.2.0"
-    }
-}

@@ -6,12 +6,29 @@ on:
           description: The Client payload
           required: true
 jobs:
+  docker-scan:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'docker-scan'
+    runs-on: ubuntu-20.04
+    steps:
+    - name: trivy
+      uses: jitsecurity-controls/jit-github-action@v2.2
+      with:
+        docker_user: jit-bot
+        docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
+        
+        security_control: ghcr.io/jitsecurity-controls/control-trivy-alpine:main
+        security_control_args: --quiet config --severity HIGH,CRITICAL -f json --ignorefile /opt/.trivyignore \${WORK_DIR:-.}
+        
+        dispatch_type: workflow
+        context: ${{toJSON(fromJSON(github.event.inputs.client_payload).context)}}
+        runner_setup: ${{toJSON(fromJSON(github.event.inputs.client_payload).context.job.runner.setup)}}
+
   enrich:
     if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'enrich'
     runs-on: ubuntu-20.04
     steps:
     - name: enrichment
-      uses: jitsecurity-controls/jit-github-action@v2.1
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
@@ -23,19 +40,87 @@ jobs:
         context: ${{toJSON(fromJSON(github.event.inputs.client_payload).context)}}
         runner_setup: ${{toJSON(fromJSON(github.event.inputs.client_payload).context.job.runner.setup)}}
 
-  secret-detection:
-    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'secret-detection'
+  iac-misconfig-detection-cloudformation:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'iac-misconfig-detection-cloudformation'
     runs-on: ubuntu-20.04
     steps:
-    - name: gitleaks
-      uses: jitsecurity-controls/jit-github-action@v2.1
+    - name: kics
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
         
-        security_control: ghcr.io/jitsecurity-controls/control-gitleaks-alpine:main
-        security_control_args: detect --config \$GITLEAKS_CONFIG_FILE_PATH --source \${WORK_DIR:-.} -v --report-format json --report-path \$REPORT_FILE --redact --no-git --exit-code 0
-        security_control_output_file: /tmp/report.json
+        security_control: ghcr.io/jitsecurity-controls/control-kics-alpine:main
+        security_control_args: scan -t CloudFormation -p \${WORK_DIR:-.} -o \$REPORT_FILE -f json --config \/cloudformation-config.yaml --disable-secrets
+        security_control_output_file: /code/jit-report/results.json
+        dispatch_type: workflow
+        context: ${{toJSON(fromJSON(github.event.inputs.client_payload).context)}}
+        runner_setup: ${{toJSON(fromJSON(github.event.inputs.client_payload).context.job.runner.setup)}}
+
+  iac-misconfig-detection-pulumi:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'iac-misconfig-detection-pulumi'
+    runs-on: ubuntu-20.04
+    steps:
+    - name: kics
+      uses: jitsecurity-controls/jit-github-action@v2.2
+      with:
+        docker_user: jit-bot
+        docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
+        
+        security_control: ghcr.io/jitsecurity-controls/control-kics-alpine:main
+        security_control_args: scan -t Pulumi -p \${WORK_DIR:-.} -o \$REPORT_FILE -f json --config \/pulumi-config.yaml --disable-secrets
+        security_control_output_file: /code/jit-report/results.json
+        dispatch_type: workflow
+        context: ${{toJSON(fromJSON(github.event.inputs.client_payload).context)}}
+        runner_setup: ${{toJSON(fromJSON(github.event.inputs.client_payload).context.job.runner.setup)}}
+
+  iac-misconfig-detection-serverless:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'iac-misconfig-detection-serverless'
+    runs-on: ubuntu-20.04
+    steps:
+    - name: kics
+      uses: jitsecurity-controls/jit-github-action@v2.2
+      with:
+        docker_user: jit-bot
+        docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
+        
+        security_control: ghcr.io/jitsecurity-controls/control-kics-alpine:main
+        security_control_args: scan -t ServerlessFW -p \${WORK_DIR:-.} -o \$REPORT_FILE -f json --config \/serverless-config.yaml --disable-secrets
+        security_control_output_file: /code/jit-report/results.json
+        dispatch_type: workflow
+        context: ${{toJSON(fromJSON(github.event.inputs.client_payload).context)}}
+        runner_setup: ${{toJSON(fromJSON(github.event.inputs.client_payload).context.job.runner.setup)}}
+
+  iac-misconfig-detection-terraform:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'iac-misconfig-detection-terraform'
+    runs-on: ubuntu-20.04
+    steps:
+    - name: kics
+      uses: jitsecurity-controls/jit-github-action@v2.2
+      with:
+        docker_user: jit-bot
+        docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
+        
+        security_control: ghcr.io/jitsecurity-controls/control-kics-alpine:main
+        security_control_args: scan -t Terraform -p \${WORK_DIR:-.} -o \$REPORT_FILE -f json --config \/terraform-config.yaml --disable-secrets
+        security_control_output_file: /code/jit-report/results.json
+        dispatch_type: workflow
+        context: ${{toJSON(fromJSON(github.event.inputs.client_payload).context)}}
+        runner_setup: ${{toJSON(fromJSON(github.event.inputs.client_payload).context.job.runner.setup)}}
+
+  remediation-pr:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'remediation-pr'
+    runs-on: ubuntu-20.04
+    steps:
+    - name: remediation-pr
+      uses: jitsecurity-controls/jit-github-action@v2.2
+      with:
+        docker_user: jit-bot
+        docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
+        
+        security_control: ghcr.io/jitsecurity-controls/open-remediation-pr-alpine:main
+        security_control_args: --github-token ${{fromJSON(github.event.inputs.client_payload).payload.github_token}} --fix-pr-config ${{fromJSON(github.event.inputs.client_payload).payload.fix_pr_config}} --output-file \$REPORT_FILE
+        security_control_output_file: /opt/code/jit-report/results.json
         dispatch_type: workflow
         context: ${{toJSON(fromJSON(github.event.inputs.client_payload).context)}}
         runner_setup: ${{toJSON(fromJSON(github.event.inputs.client_payload).context.job.runner.setup)}}
@@ -45,7 +130,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: osv-scanner
-      uses: jitsecurity-controls/jit-github-action@v2.1
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
@@ -62,7 +147,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: nancy
-      uses: jitsecurity-controls/jit-github-action@v2.1
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
@@ -79,7 +164,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: npm-audit
-      uses: jitsecurity-controls/jit-github-action@v2.1
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
@@ -96,7 +181,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: gosec
-      uses: jitsecurity-controls/jit-github-action@v2.1
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
@@ -113,7 +198,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: semgrep
-      uses: jitsecurity-controls/jit-github-action@v2.1
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
@@ -130,7 +215,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: semgrep
-      uses: jitsecurity-controls/jit-github-action@v2.1
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
@@ -142,18 +227,18 @@ jobs:
         context: ${{toJSON(fromJSON(github.event.inputs.client_payload).context)}}
         runner_setup: ${{toJSON(fromJSON(github.event.inputs.client_payload).context.job.runner.setup)}}
 
-  static-code-analysis-python:
-    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'static-code-analysis-python'
+  static-code-analysis-python-semgrep:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'static-code-analysis-python-semgrep'
     runs-on: ubuntu-20.04
     steps:
-    - name: bandit
-      uses: jitsecurity-controls/jit-github-action@v2.1
+    - name: semgrep
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
         
-        security_control: ghcr.io/jitsecurity-controls/control-bandit-slim:main
-        security_control_args: -r \${WORK_DIR:-.} -f json -q -lll -iii
+        security_control: ghcr.io/jitsecurity-controls/control-semgrep-alpine:latest
+        security_control_args: --json --config=/semgrep-python-config.yml --metrics=off --severity=ERROR \${WORK_DIR:-.}
         
         dispatch_type: workflow
         context: ${{toJSON(fromJSON(github.event.inputs.client_payload).context)}}
@@ -164,7 +249,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: semgrep
-      uses: jitsecurity-controls/jit-github-action@v2.1
+      uses: jitsecurity-controls/jit-github-action@v2.2
       with:
         docker_user: jit-bot
         docker_password: ${{fromJSON(github.event.inputs.client_payload).payload.container_registry_token}}
