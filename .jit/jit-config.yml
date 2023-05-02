@@ -1,4 +1,17 @@
-github_branch_protection:
-  organization:
-    amount_of_required_reviews: 1
-    required_status_checks: []
+applications:
+- application_name: sffda
+  authentication_mode: non-authenticated
+  exclude_paths: []
+  target_url: https://public-firing-range.appspot.com
+  type: web
+deployment:
+  environments:
+  - staging
+plan_items:
+  item-web-app-scanner:
+    deployment:
+      configuration:
+      - sffda
+      tags:
+      - staging
+      trigger: deployment
