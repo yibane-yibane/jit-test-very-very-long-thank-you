@@ -1,6 +1,6 @@
 applications:
 - api_domain: cddswde.dewdew.dewdew
-  application_name: sffda
+  application_name: sffdaaaaaaa
   authentication_mode: non-authenticated
   exclude_paths: []
   target_url: https://public-firing-range.appspot.com
@@ -12,7 +12,7 @@ plan_items:
   item-web-app-scanner:
     deployment:
       configuration:
-      - sffda
+      - sffdaaaaaaa
       tags:
       - staging
       trigger: deployment
