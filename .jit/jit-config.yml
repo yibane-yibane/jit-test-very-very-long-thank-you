@@ -1,5 +1,6 @@
 applications:
-- application_name: sffda
+- api_domain: cddswde.dewdew.dewdew
+  application_name: sffda
   authentication_mode: non-authenticated
   exclude_paths: []
   target_url: https://public-firing-range.appspot.com
